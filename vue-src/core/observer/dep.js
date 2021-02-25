@@ -54,6 +54,10 @@ Dep.target = null
 const targetStack = []
 
 /*将watcher观察者实例设置给Dep.target，用以依赖收集。同时将该实例存入target栈中*/
+/**
+ * 
+ * @param {*} _target 当前的渲染 watcher 实例对象 
+ */
 export function pushTarget (_target: Watcher) {
   if (Dep.target) targetStack.push(Dep.target)
   Dep.target = _target

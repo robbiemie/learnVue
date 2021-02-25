@@ -13,7 +13,7 @@ import {
 } from '../util/index'
 
 import type { ISet } from '../util/index'
-
+// 全局 uid
 let uid = 0
 
 /**
@@ -55,15 +55,13 @@ export default class Watcher {
     if (options) {
       this.deep = !!options.deep
       this.user = !!options.user
-      this.lazy = !!options.lazy
       this.sync = !!options.sync
     } else {
-      this.deep = this.user = this.lazy = this.sync = false
+      this.deep = this.user = this.sync = false
     }
     this.cb = cb
     this.id = ++uid // uid for batching
     this.active = true
-    this.dirty = this.lazy // for lazy watchers
     this.deps = []
     this.newDeps = []
     this.depIds = new Set()
@@ -87,9 +85,7 @@ export default class Watcher {
         )
       }
     }
-    this.value = this.lazy
-      ? undefined
-      : this.get()
+    this.value = this.get()
   }
 
   /**
@@ -179,10 +175,7 @@ export default class Watcher {
       调度者接口，当依赖发生改变的时候进行回调。
    */
   update () {
-    /* istanbul ignore else */
-    if (this.lazy) {
-      this.dirty = true
-    } else if (this.sync) {
+    if (this.sync) {
       /*同步则执行run直接渲染视图*/
       this.run()
     } else {
@@ -239,7 +232,6 @@ export default class Watcher {
    /*获取观察者的值*/
   evaluate () {
     this.value = this.get()
-    this.dirty = false
   }
 
   /**

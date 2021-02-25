@@ -142,7 +142,6 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
       而且该对象在shouldConvert的时候才会进行Observer。这是一个标识位，避免重复对value进行Observer
     */
     observerState.shouldConvert &&
-    !isServerRendering() &&
     (Array.isArray(value) || isPlainObject(value)) &&
     Object.isExtensible(value) &&
     !value._isVue
